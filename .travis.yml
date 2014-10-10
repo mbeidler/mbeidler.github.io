@@ -1,0 +1,24 @@
+language: haskell
+ghc: 7.8
+branches:
+  only:
+  - source
+before_install:
+- git submodule foreach --recursive 'git checkout master; git ls-files | grep -v README
+  | grep -v LICENSE | xargs -r git rm'
+install:
+- cabal install hakyll pandoc-1.13.1 -fhttps
+before_script:
+- git config --global user.email "$GIT_EMAIL"
+- git config --global user.name "$GIT_NAME"
+script: cabal run -j build
+after_script:
+- cd _site
+- export REMOTE=$(git config remote.origin.url | sed 's/.*:\/\///')
+- git remote add github https://${GH_TOKEN}@${REMOTE}
+- git add --all
+- git status
+- git commit -m "Built by Travis ( build $TRAVIS_BUILD_NUMBER )"
+- git push github master:master | grep -v http
+env:
+  secure: IYu8WYClhG60Nz7uDY9Vnntw0tyJMS8S/ogvQFcUxJRxYpwJ9bP7s469Uo5gU8xfMOcEvKKXT/tjEYOwakp2UJDAdNcXJvn8//6xiNQiJXv/J9ugp3VJQy7Zl1MqN/iwXw/1vRE/9NXWHsJ2HcyAq9KjVzsbR/AA2xS/Fpywpl4=

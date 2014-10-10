@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title"><a href=$url$>$title$</a></h3>
+    </div>
+    <div class="panel-body">
+      $if(date)$
+        <div style="font-weight: bold;">$date$</div>
+      $endif$
+
+      $if(tags)$
+        <div style="padding-top: 10px;">
+          $tags$
+        </div>
+        <br />
+      $endif$
+
+      $body$
+    </div>
+  </div>
+</div>
