@@ -3,22 +3,23 @@ ghc: 7.8
 branches:
   only:
   - source
-before_install:
-  - git submodule foreach --recursive 'git checkout master; git ls-files | grep -v README.md | grep -v LICENSE | xargs -r git rm'
 install:
   - cabal install hakyll pandoc-1.13.1 -fhttps
 before_script:
-  - git config --global user.email "$GIT_EMAIL"
-  - git config --global user.name "$GIT_NAME"
+  - cd _site
+  - git checkout master
+  - git pull origin master
+  - cd ..
 script: cabal run -j build
 after_script:
   - cd _site
-  - export REMOTE=$(git config remote.origin.url | sed 's/.*:\/\///')
-  - git remote add github https://${GH_TOKEN}@${REMOTE}
-  - git add --all
   - git status
-  - git commit -m "Built by Travis ( build $TRAVIS_BUILD_NUMBER )"
-  - git push github master:master | grep -v http
+  - git add --all
+  - git config --global user.email "michael.beidler@gmail.com"
+  - git config --global user.name "Travis"
+  - git commit -m "Built by Travis"
+  - git push "$REPO_URL" master | grep -v http
+  - cd ..
 env:
   global:
-  - secure: "ShnZHFYtaspqkK70MF27Td7fDvesggHZm8XUHSztXng60KslnizwoXOGgdVtj5YDLGmjCWSKkBWS1ua3UbCMfv/ZWuSHJ/wNB2PikfihH7CifIForTn58pNxjvmUB1x3LcMYSlKPmZDGSWrxlxCtIyy6CtIInWeXduKIhExW6WE="
+  - secure: jD7ruLd0juuUK5FYIctGVqsHse1Jc7tC4FuNn/9AEqlLPXGzVtDL+pWRPkIrbBfmCx5Syi2udg6hKXLQKSCeGMDho2l66/BwqTHkXGqhztBBRLDfS1RiymNg+HASOvHS3pebhvz6Vt/PkFKdfkJ5JXFZYeGdBrBPa6xq4UX6vrM=
