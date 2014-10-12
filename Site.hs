@@ -32,7 +32,9 @@ main = hakyll $ do
             let ctx = constField tag "title"                          `mappend`
                       listField "posts" (postCtx tags) (return posts) `mappend`
                       defaultContext
-            makeItem "" >>= applyPanel ctx
+            makeItem "" 
+                >>= loadAndApplyTemplate "templates/post-list.html" ctx
+                >>= applyPanel ctx
 
     match "posts/*" $ do
         route $ setExtension "html"
