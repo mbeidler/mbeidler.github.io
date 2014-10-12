@@ -13,7 +13,7 @@ main :: IO ()
 main = hakyll $ do
     match "css/*" $ compile compressCssCompiler
 
-    match "js/*" $ do
+    match ("js/*" .||. "favicon.ico") $ do
         route   idRoute
         compile copyFileCompiler
 
