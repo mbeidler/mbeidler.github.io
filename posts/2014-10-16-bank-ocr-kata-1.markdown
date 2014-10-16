@@ -175,7 +175,7 @@ So, now we have a transformation that takes the input string and yields a list o
 parse :: String -> Int
 parse = foldl f 0 . prep
   where
-    prep = map concat . transpose . map triples . tail . lines
+    prep = map concat . transpose . map triples . init . lines
     f n digit = let r' = p' digit in r' + 10 * n
 ```
 
