@@ -156,7 +156,7 @@ triples _          <span class="fu">=</span> []</code></pre>
 <pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">parse ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Int</span>
 parse <span class="fu">=</span> foldl f <span class="dv">0</span> <span class="fu">.</span> prep
   <span class="kw">where</span>
-    prep <span class="fu">=</span> map concat <span class="fu">.</span> transpose <span class="fu">.</span> map triples <span class="fu">.</span> tail <span class="fu">.</span> lines
+    prep <span class="fu">=</span> map concat <span class="fu">.</span> transpose <span class="fu">.</span> map triples <span class="fu">.</span> init <span class="fu">.</span> lines
     f n digit <span class="fu">=</span> <span class="kw">let</span> r' <span class="fu">=</span> p' digit <span class="kw">in</span> r' <span class="fu">+</span> <span class="dv">10</span> <span class="fu">*</span> n</code></pre>
 <p>Now, if we run our tests in the interpreter:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">*BankOCR&gt;</span> bankOCRSpec
