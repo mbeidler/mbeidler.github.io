@@ -3,9 +3,9 @@ title: The Bank OCR Kata in Haskell - Part 1
 tags: Haskell, Kata
 ---
 
-If you've never experimented with [Haskell](http://www.haskell.org/haskellwiki/Haskell), wait no longer! Install the [Haskell Platform](http://www.haskell.org/platform/) for your OS of choice.
+If you've never experimented with [Haskell](http://www.haskell.org/haskellwiki/Haskell), spare not a moment more! Install the [Haskell Platform](http://www.haskell.org/platform/) on your preferred OS. [Learn You a Haskell for Great Good!](http://learnyouahaskell.com/) and [Real World Haskell](http://book.realworldhaskell.org/) are excellent resources and as Haskell is quite a bit different from traditional languages, the answer to this [Stack Overflow Question](http://stackoverflow.com/questions/1012573/getting-started-with-haskell) provides useful guidance on study strategies.
 
-Today, we're going to solve the [Bank OCR Kata](http://codingdojo.org/cgi-bin/index.pl?KataBankOCR) with Haskell.
+In this series of posts, we're going to solve the [Bank OCR Kata](http://codingdojo.org/cgi-bin/index.pl?KataBankOCR) with Haskell.
 
 ### Setting up a working environment ###
 
@@ -66,10 +66,10 @@ Ok, modules loaded: BankOCR.
 *BankOCR> 
 ```
 
-Now, we can modify our BankOCR.hs file, run `cabal repl`{.bash} to reload the file into our interpreter and test out our changes. 
+Now, we can modify our BankOCR.hs file, enter `:reload`{.bash} at the interactive prompt to reload our module and test out our changes.
 
 
-### Implementing the Kata ###
+### Implementing User Story 1 ###
 
 -----------------------------
 
@@ -115,7 +115,7 @@ parse :: String -> Int
 parse = undefined
 ```
 
-Now, if we run `cabal repl`{.bash} and evaluate **bankOCRSpec** in the interpreter, our tests will fail.
+Now, if we enter `:reload`{.bash} and evaluate **bankOCRSpec** in the interpreter, our tests will fail.
 
 ```bash
 *BankOCR> bankOCRSpec

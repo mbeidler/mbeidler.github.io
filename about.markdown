@@ -6,7 +6,7 @@ title: About
 
 ---
 
-I am Michael Beidler. I studied Math and Physics at University of South Florida. I work as a software developer for McKesson in the IWS R&D group. My interests include hiking, piano, literature, philosophy, good coffee and the occassional game of chess.
+I am Michael Beidler. I work as a software developer for McKesson in the IWS R&D group. I studied Math and Physics at University of South Florida. I enjoy hiking, running, piano, literature, philosophy, good coffee and the occassional game of chess.
 
 <br />
 
