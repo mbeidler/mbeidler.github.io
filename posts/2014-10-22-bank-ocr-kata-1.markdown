@@ -3,7 +3,7 @@ title: The Bank OCR Kata in Haskell - Part 1
 tags: Haskell, Kata
 ---
 
-If you've never experimented with [Haskell](http://www.haskell.org/haskellwiki/Haskell), spare not a moment more! Install the [Haskell Platform](http://www.haskell.org/platform/) on your preferred OS. [Learn You a Haskell for Great Good!](http://learnyouahaskell.com/) and [Real World Haskell](http://book.realworldhaskell.org/) are excellent resources and as Haskell is quite a bit different from traditional languages, the answer to this [Stack Overflow Question](http://stackoverflow.com/questions/1012573/getting-started-with-haskell) provides useful guidance on study strategies.
+If you've never experimented with [Haskell](http://www.haskell.org/haskellwiki/Haskell), spare not a moment more! Install the [Haskell Platform](http://www.haskell.org/platform/) on your preferred OS. [Learn You a Haskell for Great Good!](http://learnyouahaskell.com/) and [Real World Haskell](http://book.realworldhaskell.org/) are excellent resources and as Haskell is quite a bit different from traditional languages, this [Stack Overflow answer](http://stackoverflow.com/questions/1012573/getting-started-with-haskell#1016986) provides useful guidance on study strategies.
 
 In this series of posts, we're going to solve the [Bank OCR Kata](http://codingdojo.org/cgi-bin/index.pl?KataBankOCR) with Haskell.
 
@@ -22,10 +22,11 @@ I recommend initializing an empty git repository to save your work at various po
 ```bash
 git init
 echo ".cabal-sandbox" >> .gitignore
+echo "cabal.sandbox.config" >> .gitignore
 echo "dist" >> .gitignore
 ```
 
-For the following command, select all defaults:
+For the following command, select all defaults, with package build option set to **Library**:
 ```bash
 cabal init
 cabal sandbox init
@@ -164,6 +165,7 @@ Now, if we test out our steps so far in the interpreter, we get a list of lines,
 
 4. We can see that to continue, we need a way to combine the first element of the first line's list with the first element of the second line's list, etc. Conveniently, Haskell already has a [transpose](http://hackage.haskell.org/package/base-4.7.0.1/docs/Data-List.html#v:transpose) function that performs exactly that operation. `[[String]] -> [[String]]`{.haskell}
 ```bash
+*BankOCR> :m + Data.List
 *BankOCR> transpose it
 [["   ","  |","  |"],["   ","  |","  |"],["   ","  |","  |"],["   ","  |","  |"],["   ","  |","  |"],["   ","  |","  |"],["   ","  |","  |"],["   ","  |","  |"],["   ","  |","  |"]]
 ```
@@ -179,7 +181,13 @@ parse = foldl f 0 . prep
     f n digit = let r' = p' digit in r' + 10 * n
 ```
 
-Now, if we run our tests in the interpreter:
+Add the necessary import at the top of the file.
+```haskell
+import Data.List (transpose)
+import Test.Hspec
+```
+
+Now, if we reload and run our tests in the interpreter:
 ```bash
 *BankOCR> bankOCRSpec
 
@@ -196,4 +204,12 @@ Finished in 0.0004 seconds
 
 ---
 
-It is quite satisfying that with pattern matching, function composition and higher-order functions, this Haskell implementation is only 17 lines long!
+It is quite satisfying that with pattern matching, function composition and higher-order functions, this Haskell implementation is only 19 lines long!
+
+<br />
+
+*Source*
+```bash
+git clone https://github.com/mbeidler/BankOCR.git
+git checkout -f post-1
+```
