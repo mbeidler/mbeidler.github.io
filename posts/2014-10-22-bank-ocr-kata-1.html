@@ -43,7 +43,7 @@
         <br />
       
 
-      <p>If you’ve never experimented with <a href="http://www.haskell.org/haskellwiki/Haskell">Haskell</a>, spare not a moment more! Install the <a href="http://www.haskell.org/platform/">Haskell Platform</a> on your preferred OS. <a href="http://learnyouahaskell.com/">Learn You a Haskell for Great Good!</a> and <a href="http://book.realworldhaskell.org/">Real World Haskell</a> are excellent resources and as Haskell is quite a bit different from traditional languages, the answer to this <a href="http://stackoverflow.com/questions/1012573/getting-started-with-haskell">Stack Overflow Question</a> provides useful guidance on study strategies.</p>
+      <p>If you’ve never experimented with <a href="http://www.haskell.org/haskellwiki/Haskell">Haskell</a>, spare not a moment more! Install the <a href="http://www.haskell.org/platform/">Haskell Platform</a> on your preferred OS. <a href="http://learnyouahaskell.com/">Learn You a Haskell for Great Good!</a> and <a href="http://book.realworldhaskell.org/">Real World Haskell</a> are excellent resources and as Haskell is quite a bit different from traditional languages, this <a href="http://stackoverflow.com/questions/1012573/getting-started-with-haskell#1016986">Stack Overflow answer</a> provides useful guidance on study strategies.</p>
 <p>In this series of posts, we’re going to solve the <a href="http://codingdojo.org/cgi-bin/index.pl?KataBankOCR">Bank OCR Kata</a> with Haskell.</p>
 <h3 id="setting-up-a-working-environment">Setting up a working environment</h3>
 <hr />
@@ -53,8 +53,9 @@
 <p>I recommend initializing an empty git repository to save your work at various points.</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">git</span> init
 <span class="kw">echo</span> <span class="st">&quot;.cabal-sandbox&quot;</span> <span class="kw">&gt;&gt;</span> .gitignore
+<span class="kw">echo</span> <span class="st">&quot;cabal.sandbox.config&quot;</span> <span class="kw">&gt;&gt;</span> .gitignore
 <span class="kw">echo</span> <span class="st">&quot;dist&quot;</span> <span class="kw">&gt;&gt;</span> .gitignore</code></pre>
-<p>For the following command, select all defaults:</p>
+<p>For the following command, select all defaults, with package build option set to <strong>Library</strong>:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cabal</span> init
 <span class="kw">cabal</span> sandbox init</code></pre>
 <p>Let’s create our source file:</p>
@@ -147,7 +148,8 @@ triples _          <span class="fu">=</span> []</code></pre>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">*BankOCR&gt;</span> map triples . init . lines $ ones
 [[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>],[<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>]]</code></pre></li>
 <li><p>We can see that to continue, we need a way to combine the first element of the first line’s list with the first element of the second line’s list, etc. Conveniently, Haskell already has a <a href="http://hackage.haskell.org/package/base-4.7.0.1/docs/Data-List.html#v:transpose">transpose</a> function that performs exactly that operation. <code class="sourceCode haskell">[[<span class="dt">String</span>]] <span class="ot">-&gt;</span> [[<span class="dt">String</span>]]</code></p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">*BankOCR&gt;</span> transpose it
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">*BankOCR&gt;</span> :m + Data.List
+<span class="kw">*BankOCR&gt;</span> transpose it
 [[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>]]</code></pre></li>
 <li><p>All that remains is to collapse the 3 rows of 3 characters into one 9-character string using <code class="sourceCode haskell">map concat</code>. <code class="sourceCode haskell">[[<span class="dt">String</span>]] <span class="ot">-&gt;</span> [<span class="dt">String</span>]</code></p></li>
 </ol>
@@ -157,7 +159,10 @@ parse <span class="fu">=</span> foldl f <span class="dv">0</span> <span class="f
   <span class="kw">where</span>
     prep <span class="fu">=</span> map concat <span class="fu">.</span> transpose <span class="fu">.</span> map triples <span class="fu">.</span> init <span class="fu">.</span> lines
     f n digit <span class="fu">=</span> <span class="kw">let</span> r' <span class="fu">=</span> p' digit <span class="kw">in</span> r' <span class="fu">+</span> <span class="dv">10</span> <span class="fu">*</span> n</code></pre>
-<p>Now, if we run our tests in the interpreter:</p>
+<p>Add the necessary import at the top of the file.</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.List</span> (transpose)
+<span class="kw">import </span><span class="dt">Test.Hspec</span></code></pre>
+<p>Now, if we reload and run our tests in the interpreter:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">*BankOCR&gt;</span> bankOCRSpec
 
 <span class="kw">When</span> parsing human readable account numbers
@@ -169,7 +174,11 @@ parse <span class="fu">=</span> foldl f <span class="dv">0</span> <span class="f
 <span class="kw">3</span> examples, 0 failures</code></pre>
 <h3 id="conclusion">Conclusion</h3>
 <hr />
-<p>It is quite satisfying that with pattern matching, function composition and higher-order functions, this Haskell implementation is only 17 lines long!</p>
+<p>It is quite satisfying that with pattern matching, function composition and higher-order functions, this Haskell implementation is only 19 lines long!</p>
+<p><br /></p>
+<p><em>Source</em></p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">git</span> clone https://github.com/mbeidler/BankOCR.git
+<span class="kw">git</span> checkout -f post-1</code></pre>
     </div>
     
     <div class="panel-footer"> 
