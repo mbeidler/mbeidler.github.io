@@ -4,7 +4,7 @@ branches:
   only:
   - source
 install:
-  - cabal install
+  - cabal install hakyll blaze-html
 before_script:
   - cd _site
   - git checkout master
