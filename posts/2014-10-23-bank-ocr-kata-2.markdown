@@ -3,7 +3,7 @@ title: The Bank OCR Kata in Haskell - Part 2
 tags: Haskell, Kata
 ---
 
-In [Part 1](http://localhost:8000/posts/2014-10-22-bank-ocr-kata-1.html), we implemented **User Story 1** from the [Bank OCR Kata](http://codingdojo.org/cgi-bin/index.pl?KataBankOCR). **User Story 2** specifies a simple checksum calculation to validate account numbers.
+In [Part 1](http://www.typechecked.com/posts/2014-10-22-bank-ocr-kata-1.html), we implemented **User Story 1** from the [Bank OCR Kata](http://codingdojo.org/cgi-bin/index.pl?KataBankOCR). **User Story 2** specifies a simple checksum calculation to validate account numbers.
 
 *Starting Point*
 ```bash
