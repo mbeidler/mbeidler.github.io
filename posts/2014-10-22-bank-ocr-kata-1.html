@@ -48,40 +48,40 @@
 <h3 id="setting-up-a-working-environment">Setting up a working environment</h3>
 <hr />
 <p>Create a working directory. We will sandbox our Haskell libraries here instead of installing them into <a href="http://www.haskell.org/cabal/">Cabal’s</a> global package database.</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">mkdir</span> BankOCR
-<span class="kw">cd</span> BankOCR</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">mkdir</span> BankOCR
+<span class="kw">cd</span> BankOCR</code></pre></div>
 <p>I recommend initializing an empty git repository to save your work at various points.</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">git</span> init
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">git</span> init
 <span class="kw">echo</span> <span class="st">&quot;.cabal-sandbox&quot;</span> <span class="kw">&gt;&gt;</span> .gitignore
 <span class="kw">echo</span> <span class="st">&quot;cabal.sandbox.config&quot;</span> <span class="kw">&gt;&gt;</span> .gitignore
-<span class="kw">echo</span> <span class="st">&quot;dist&quot;</span> <span class="kw">&gt;&gt;</span> .gitignore</code></pre>
+<span class="kw">echo</span> <span class="st">&quot;dist&quot;</span> <span class="kw">&gt;&gt;</span> .gitignore</code></pre></div>
 <p>For the following command, select all defaults, with package build option set to <strong>Library</strong>:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cabal</span> init
-<span class="kw">cabal</span> sandbox init</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cabal</span> init
+<span class="kw">cabal</span> sandbox init</code></pre></div>
 <p>Let’s create our source file:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">echo</span> <span class="st">&quot;module BankOCR where&quot;</span> <span class="kw">&gt;&gt;</span> BankOCR.hs</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">echo</span> <span class="st">&quot;module BankOCR where&quot;</span> <span class="kw">&gt;&gt;</span> BankOCR.hs</code></pre></div>
 <p>You will now see a <strong>BankOCR.cabal</strong> file. We’re going to use <a href="https://hspec.github.io/">Hspec</a> to write our test cases, so we’ll need to add that dependency to our cabal file.</p>
 <p>Open <strong>BankOCR.cabal</strong> in a text editor, add <strong>hspec</strong> to the build-depends and set our library to use our newly created source file:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">...</span>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">...</span>
 <span class="kw">library</span>:
   <span class="kw">exposed-module</span>: BankOCR
   <span class="kw">...</span>
   <span class="kw">build-depends</span>: base <span class="kw">&gt;</span>=4.7 <span class="kw">&amp;&amp;</span> <span class="kw">&lt;4.8</span>, hspec
-<span class="kw">...</span></code></pre>
+<span class="kw">...</span></code></pre></div>
 <p>Now, let’s install our dependencies and open a <a href="https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">REPL</a> with all the dependencies loaded.</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cabal</span> install --dependencies-only
-<span class="kw">cabal</span> repl</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cabal</span> install --dependencies-only
+<span class="kw">cabal</span> repl</code></pre></div>
 <p>You should see something like this:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">...</span>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">...</span>
 <span class="kw">Loading</span> package hspec-1.11.4 ... linking ... done.
 [<span class="kw">1</span> of 1] Compiling BankOCR          ( BankOCR.hs, interpreted )
 <span class="kw">Ok</span>, modules loaded: BankOCR.
-<span class="kw">*BankOCR&gt;</span> </code></pre>
+<span class="kw">*BankOCR&gt;</span> </code></pre></div>
 <p>Now, we can modify our BankOCR.hs file, enter <code class="sourceCode bash">:<span class="kw">reload</span></code> at the interactive prompt to reload our module and test out our changes.</p>
 <h3 id="implementing-user-story-1">Implementing User Story 1</h3>
 <hr />
 <p>As we are using hspec and <a href="https://en.wikipedia.org/wiki/Test-driven_development">TDD</a>, we’ll write a simple spec for user story 1.</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">BankOCR</span> <span class="kw">where</span>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">BankOCR</span> <span class="kw">where</span>
 
 <span class="kw">import </span><span class="dt">Test.Hspec</span>
 
@@ -110,20 +110,20 @@ oneToNine <span class="fu">=</span> unlines
   [ <span class="st">&quot;    _  _     _     _  _  _ &quot;</span>
   , <span class="st">&quot;  | _| _||_||_ |_   ||_||_|&quot;</span>
   , <span class="st">&quot;  ||_  _|  | _||_|  ||_| _|&quot;</span>
-  , <span class="st">&quot;                           &quot;</span> ]</code></pre>
+  , <span class="st">&quot;                           &quot;</span> ]</code></pre></div>
 <p>We will also stub out our parser to return a <a href="https://en.wikipedia.org/wiki/Bottom_type">bottom</a> type so that it compiles and we can run our tests.</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">parse ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Int</span>
-parse <span class="fu">=</span> undefined</code></pre>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">parse ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Int</span>
+parse <span class="fu">=</span> undefined</code></pre></div>
 <p>Now, if we enter <code class="sourceCode bash">:<span class="kw">reload</span></code> and evaluate <strong>bankOCRSpec</strong> in the interpreter, our tests will fail.</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">*BankOCR&gt;</span> bankOCRSpec
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">*BankOCR&gt;</span> bankOCRSpec
 
 <span class="kw">When</span> parsing human readable account numbers
   <span class="kw">-</span> should parse 000000000 FAILED [1]
   <span class="kw">-</span> should parse 111111111 FAILED [2]
   <span class="kw">-</span> should parse 123456789 FAILED [3]
-<span class="kw">...</span></code></pre>
+<span class="kw">...</span></code></pre></div>
 <p>We can start by using Haskell’s pattern matching to write a function that maps a 9-character string to the integer it represents.</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">p' ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Int</span>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">p' ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Int</span>
 p' <span class="st">&quot; _ | ||_|&quot;</span> <span class="fu">=</span> <span class="dv">0</span>
 p' <span class="st">&quot;     |  |&quot;</span> <span class="fu">=</span> <span class="dv">1</span>
 p' <span class="st">&quot; _  _||_ &quot;</span> <span class="fu">=</span> <span class="dv">2</span>
@@ -134,36 +134,36 @@ p' <span class="st">&quot;   |_ |_|&quot;</span> <span class="fu">=</span> <span
 p' <span class="st">&quot; _   |  |&quot;</span> <span class="fu">=</span> <span class="dv">7</span>
 p' <span class="st">&quot; _ |_||_|&quot;</span> <span class="fu">=</span> <span class="dv">8</span>
 p' <span class="st">&quot; _ |_| _|&quot;</span> <span class="fu">=</span> <span class="dv">9</span>
-p' _           <span class="fu">=</span> error <span class="st">&quot;unknown symbol&quot;</span></code></pre>
+p' _           <span class="fu">=</span> error <span class="st">&quot;unknown symbol&quot;</span></code></pre></div>
 <p>Now, to read account numbers we simply need to apply the necessary transformations to the input string to get a list of strings that <code class="sourceCode haskell">p'</code> can <strong>fold</strong> over to <strong>accumulate</strong> the resulting number.</p>
 <p>So we start with an input <code class="sourceCode haskell"><span class="dt">String</span></code> and:</p>
 <ol style="list-style-type: decimal">
 <li>Split on newline characters using Haskell’s <code class="sourceCode haskell">lines</code> function. <code class="sourceCode haskell"><span class="dt">String</span> <span class="ot">-&gt;</span> [<span class="dt">String</span>]</code></li>
 <li>Use the <code class="sourceCode haskell">init</code> function to discard the last line of whitespace. <code class="sourceCode haskell">[<span class="dt">String</span>] <span class="ot">-&gt;</span> [<span class="dt">String</span>]</code></li>
 <li><p>We further parition all the strings into 3-character triples. <code class="sourceCode haskell">[<span class="dt">String</span>] <span class="ot">-&gt;</span> [[<span class="dt">String</span>]]</code> To do so, we introduce the following function:</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">triples ::</span> [a] <span class="ot">-&gt;</span> [[a]]
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">triples ::</span> [a] <span class="ot">-&gt;</span> [[a]]
 triples (a<span class="fu">:</span>b<span class="fu">:</span>c<span class="fu">:</span>xs) <span class="fu">=</span> [a,b,c] <span class="fu">:</span> triples xs
-triples _          <span class="fu">=</span> []</code></pre>
+triples _          <span class="fu">=</span> []</code></pre></div>
 <p>Now, if we test out our steps so far in the interpreter, we get a list of lines, where the first line is a list of the top cell rows, and so on.</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">*BankOCR&gt;</span> map triples . init . lines $ ones
-[[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>],[<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>]]</code></pre></li>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">*BankOCR&gt;</span> map triples . init . lines $ ones
+[[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>,<span class="st">&quot;   &quot;</span>],[<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>]]</code></pre></div></li>
 <li><p>We can see that to continue, we need a way to combine the first element of the first line’s list with the first element of the second line’s list, etc. Conveniently, Haskell already has a <a href="http://hackage.haskell.org/package/base-4.7.0.1/docs/Data-List.html#v:transpose">transpose</a> function that performs exactly that operation. <code class="sourceCode haskell">[[<span class="dt">String</span>]] <span class="ot">-&gt;</span> [[<span class="dt">String</span>]]</code></p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">*BankOCR&gt;</span> :m + Data.List
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">*BankOCR&gt;</span> :m + Data.List
 <span class="kw">*BankOCR&gt;</span> transpose it
-[[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>]]</code></pre></li>
+[[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>],[<span class="st">&quot;   &quot;</span>,<span class="st">&quot;  |&quot;</span>,<span class="st">&quot;  |&quot;</span>]]</code></pre></div></li>
 <li><p>All that remains is to collapse the 3 rows of 3 characters into one 9-character string using <code class="sourceCode haskell">map concat</code>. <code class="sourceCode haskell">[[<span class="dt">String</span>]] <span class="ot">-&gt;</span> [<span class="dt">String</span>]</code></p></li>
 </ol>
 <p>So, now we have a transformation that takes the input string and yields a list of digit strings that <code class="sourceCode haskell">p'</code> can parse and it’s straight-forward to write a parse function using a left fold.</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">parse ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Int</span>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">parse ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Int</span>
 parse <span class="fu">=</span> foldl f <span class="dv">0</span> <span class="fu">.</span> prep
   <span class="kw">where</span>
     prep <span class="fu">=</span> map concat <span class="fu">.</span> transpose <span class="fu">.</span> map triples <span class="fu">.</span> init <span class="fu">.</span> lines
-    f n digit <span class="fu">=</span> <span class="kw">let</span> r' <span class="fu">=</span> p' digit <span class="kw">in</span> r' <span class="fu">+</span> <span class="dv">10</span> <span class="fu">*</span> n</code></pre>
+    f n digit <span class="fu">=</span> <span class="kw">let</span> r' <span class="fu">=</span> p' digit <span class="kw">in</span> r' <span class="fu">+</span> <span class="dv">10</span> <span class="fu">*</span> n</code></pre></div>
 <p>Add the necessary import at the top of the file.</p>
-<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.List</span> (transpose)
-<span class="kw">import </span><span class="dt">Test.Hspec</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">import </span><span class="dt">Data.List</span> (transpose)
+<span class="kw">import </span><span class="dt">Test.Hspec</span></code></pre></div>
 <p>Now, if we reload and run our tests in the interpreter:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">*BankOCR&gt;</span> bankOCRSpec
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">*BankOCR&gt;</span> bankOCRSpec
 
 <span class="kw">When</span> parsing human readable account numbers
   <span class="kw">-</span> should parse 000000000
@@ -171,14 +171,14 @@ parse <span class="fu">=</span> foldl f <span class="dv">0</span> <span class="f
   <span class="kw">-</span> should parse 123456789
 
 <span class="kw">Finished</span> in 0.0004 seconds
-<span class="kw">3</span> examples, 0 failures</code></pre>
+<span class="kw">3</span> examples, 0 failures</code></pre></div>
 <h3 id="conclusion">Conclusion</h3>
 <hr />
 <p>It is quite satisfying that with pattern matching, function composition and higher-order functions, this Haskell implementation is only 19 lines long!</p>
 <p><br /></p>
 <p><em>Source</em></p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">git</span> clone https://github.com/mbeidler/BankOCR.git
-<span class="kw">git</span> checkout -f post-1</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">git</span> clone https://github.com/mbeidler/BankOCR.git
+<span class="kw">git</span> checkout -f post-1</code></pre></div>
     </div>
     
     <div class="panel-footer"> 
