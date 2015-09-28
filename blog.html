@@ -4,9 +4,9 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>The Bank OCR Kata in Haskell - Part 1</title>
-    <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" href="../site.css" />
+    <title>TypeChecked, LLC</title>
+    <link rel="shortcut icon" href="./favicon.ico">
+    <link rel="stylesheet" href="./site.css" />
   </head>
   <body>
     <div class="navbar navbar-inverse">
@@ -16,29 +16,99 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="../">&lambda;</a>
+        <a class="navbar-brand" href="./">&lambda;</a>
       </div>
       <div class="navbar-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
           <li>
-            <a href="../index.html">Home</a>
+            <a href="./index.html">Home</a>
           </li>
         </ul>
       </div>
     </div>
-      <div class="container">
+      
+    <div class="container">
   <div class="panel panel-primary">
     <div class="panel-heading">
-      <h3 class="panel-title">The Bank OCR Kata in Haskell - Part 1</h3>
+      <h3 class="panel-title"><a href="./posts/2014-10-23-bank-ocr-kata-2.html">The Bank OCR Kata in Haskell - Part 2</a></h3>
+    </div>
+    <div class="panel-body">
+      
+        <div style="font-weight: bold;">October 23, 2014</div>
+      
+
+      
+        <div style="padding-top: 10px;">
+          <span class="badge tag"><a href="./tags/Haskell.html">Haskell</a></span><span class="badge tag"><a href="./tags/Kata.html">Kata</a></span>
+        </div>
+        <br />
+      
+
+      <p>In <a href="http://www.typechecked.com/posts/2014-10-22-bank-ocr-kata-1.html">Part 1</a>, we implemented <strong>User Story 1</strong> from the <a href="http://codingdojo.org/cgi-bin/index.pl?KataBankOCR">Bank OCR Kata</a>. <strong>User Story 2</strong> specifies a simple checksum calculation to validate account numbers.</p>
+<p><em>Starting Point</em></p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">git</span> clone https://github.com/mbeidler/BankOCR.git
+<span class="kw">git</span> checkout -f part-1</code></pre></div>
+<h3 id="user-story-2">User Story 2</h3>
+<hr />
+<p>To start, we will add a test to our spec:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">bankOCRSpec <span class="fu">=</span> hspec <span class="fu">$</span> <span class="kw">do</span>
+  describe <span class="st">&quot;When parsing human readable account numbers&quot;</span> <span class="fu">$</span> <span class="kw">do</span>
+    <span class="fu">...</span>
+    it <span class="st">&quot;should validate the checksum&quot;</span> <span class="fu">$</span> <span class="kw">do</span>
+      isValid <span class="dv">711111111</span> <span class="ot">`shouldBe`</span> <span class="dt">True</span>
+      isValid <span class="dv">111111117</span> <span class="ot">`shouldBe`</span> <span class="dt">False</span></code></pre></div>
+<p><em>The Calculation</em></p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">account number:  <span class="dv">3</span>  <span class="dv">4</span>  <span class="dv">5</span>  <span class="dv">8</span>  <span class="dv">8</span>  <span class="dv">2</span>  <span class="dv">8</span>  <span class="dv">6</span>  <span class="dv">5</span>
+position names:  d9 d8 d7 d6 d5 d4 d3 d2 d1
+
+checksum calculation:
+(d1<span class="dv">+2</span><span class="op">*</span>d2<span class="dv">+3</span><span class="op">*</span>d3 <span class="op">+</span>..<span class="op">+</span><span class="dv">9</span><span class="op">*</span>d9) mod <span class="dv">11</span> <span class="op">=</span> <span class="dv">0</span></code></pre></div>
+<p>We can <code class="sourceCode haskell">zip</code> the list of digit positions 1-9 with the digits in those positions.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">zip [<span class="dv">1</span><span class="fu">..</span><span class="dv">9</span>] (reverse <span class="fu">.</span> show <span class="fu">$</span> n)<span class="ot"> ::</span> [(<span class="dt">Int</span>, <span class="dt">Char</span>)]</code></pre></div>
+<p>Sum their products and check whether it is divisible by 11.</p>
+<p>The computation can be expressed very succintly using a list comprehension.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">isValid ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Bool</span>
+isValid n <span class="fu">=</span> num <span class="ot">`mod`</span> <span class="dv">11</span> <span class="fu">==</span> <span class="dv">0</span>
+  <span class="kw">where</span> 
+    num <span class="fu">=</span> sum [ i <span class="fu">*</span> (digitToInt d) <span class="fu">|</span> (i,d) <span class="ot">&lt;-</span> zip [<span class="dv">1</span><span class="fu">..</span><span class="dv">9</span>] (reverse <span class="fu">.</span> show <span class="fu">$</span> n) ]</code></pre></div>
+<p><em>Note</em>: <code class="sourceCode haskell">digitToInt</code> is imported from <code class="sourceCode haskell"><span class="dt">Data.Char</span></code>.</p>
+<p>Let’s run our tests.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">*BankOCR&gt;</span> :reload
+[<span class="kw">1</span> of 1] Compiling BankOCR          ( BankOCR.hs, interpreted )
+<span class="kw">Ok</span>, modules loaded: BankOCR.
+<span class="kw">*BankOCR&gt;</span> bankOCRSpec
+
+<span class="kw">When</span> parsing human readable account numbers
+  <span class="kw">-</span> should parse 000000000
+  <span class="kw">-</span> should parse 111111111
+  <span class="kw">-</span> should parse 123456789
+  <span class="kw">-</span> should validate the checksum
+
+<span class="kw">Finished</span> in 0.0007 seconds
+<span class="kw">4</span> examples, 0 failures
+<span class="kw">*BankOCR&gt;</span> </code></pre></div>
+<p><strong>Done!</strong></p>
+<p><em>Source</em></p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">git</span> clone https://github.com/mbeidler/BankOCR.git
+<span class="kw">git</span> checkout -f part-2</code></pre></div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="container">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title"><a href="./posts/2014-10-22-bank-ocr-kata-1.html">The Bank OCR Kata in Haskell - Part 1</a></h3>
     </div>
     <div class="panel-body">
       
         <div style="font-weight: bold;">October 22, 2014</div>
       
-      
+
       
         <div style="padding-top: 10px;">
-          <span class="badge tag"><a href="../tags/Haskell.html">Haskell</a></span><span class="badge tag"><a href="../tags/Kata.html">Kata</a></span>
+          <span class="badge tag"><a href="./tags/Haskell.html">Haskell</a></span><span class="badge tag"><a href="./tags/Kata.html">Kata</a></span>
         </div>
         <br />
       
@@ -180,22 +250,10 @@ parse <span class="fu">=</span> foldl f <span class="dv">0</span> <span class="f
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">git</span> clone https://github.com/mbeidler/BankOCR.git
 <span class="kw">git</span> checkout -f post-1</code></pre></div>
     </div>
-    
-    <div class="panel-footer"> 
-      <div id="disqus_thread"></div>
-      <script type="text/javascript">
-        var disqus_shortname = 'typechecked'; // required: replace example with your forum shortname
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-      </script>
-      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    </div>
-    
   </div>
 </div>
+
+
 
     <footer class="container">
       <div class="panel panel-default">
@@ -208,7 +266,7 @@ parse <span class="fu">=</span> foldl f <span class="dv">0</span> <span class="f
         </div>
       </div>
     </footer>
-    <script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>
-    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="./js/bootstrap.min.js"></script>
   </body>
 </html>
