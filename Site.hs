@@ -55,7 +55,7 @@ main = hakyll $ do
                 >>= recentFirst
             let indexCtx = 
                     listField "posts" (postCtx tags) (return posts) `mappend` 
-                    constField "title" "Type Checked"               `mappend`
+                    constField "title" "Typechecked"                `mappend`
                     defaultContext
             
             getResourceBody
