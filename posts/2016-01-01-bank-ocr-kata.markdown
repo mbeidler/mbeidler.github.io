@@ -301,6 +301,16 @@ prepare = map concat . transpose . map triples . init . lines
     triples _          = []
 ```
 
+And we can use `prepare`{.haskell} to create a `readAccount`{.haskell} function, which together with the `Result`{.haskell} type are our only exports.
+
+```haskell
+readAccount :: String -> Result
+readAccount = run . readDigits
+
+readDigits :: String -> [DigitR]
+readDigits = map readDigit . prepare
+```
+
 ### Main ###
 
 ------------
