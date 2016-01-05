@@ -138,7 +138,6 @@ near str <span class="fu">=</span> [ d <span class="fu">|</span> (s,d) <span cla
 
 <span class="ot">diffSum ::</span> <span class="dt">Eq</span> a <span class="ot">=&gt;</span> [a] <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> <span class="dt">Int</span>
 diffSum xs <span class="fu">=</span> length <span class="fu">.</span> filter not <span class="fu">.</span> zipWith (<span class="fu">==</span>) xs</code></pre></div>
-<p>This makes our <code class="sourceCode haskell">readDigit</code> function simple:</p>
 <p>Now we can write a simple function to read a digit from a digit string. If the lookup fails it will enumerate the <em>1-near</em> neighbors and store them in the <code class="sourceCode haskell"><span class="dt">Left</span></code> constructor. Otherwise, it will simply return the <code class="sourceCode haskell"><span class="dt">Digit</span></code> on the <code class="sourceCode haskell"><span class="dt">Right</span></code>.</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">readDigit ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">DigitR</span>
 readDigit s <span class="fu">=</span> maybe (<span class="dt">Left</span> <span class="fu">$</span> near s) <span class="dt">Right</span> <span class="fu">$</span> lookup s digitMap</code></pre></div>
