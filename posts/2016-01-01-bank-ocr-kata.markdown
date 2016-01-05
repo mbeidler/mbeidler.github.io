@@ -142,8 +142,6 @@ diffSum :: Eq a => [a] -> [a] -> Int
 diffSum xs = length . filter not . zipWith (==) xs
 ```
 
-This makes our `readDigit`{.haskell} function simple:
-
 Now we can write a simple function to read a digit from a digit string. If the lookup fails it will enumerate the *1-near* neighbors and store them in the `Left`{.haskell} constructor. Otherwise, it will simply return the `Digit`{.haskell} on the `Right`{.haskell}.
 
 ```haskell
