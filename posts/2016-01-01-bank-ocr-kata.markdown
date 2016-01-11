@@ -172,7 +172,7 @@ to represent the end result. The `Success`{.haskell} constructor represents the 
 
 So, assuming we have a list of digit strings (transforming the input data to achieve this will be covered at the end), we can run our read function to produce a `[DigitR]`{.haskell}. 
 
-Instead of enumerating near digits every time, it is better to store there *1-near* neighbors in a `Map`{.haskell}. We'll first enumerate the relationships using our `digitMap`{.haskell} in GHCi:
+Instead of enumerating near digits every time, it is better to store their *1-near* neighbors in a `Map`{.haskell}. We'll first enumerate the relationships using our `digitMap`{.haskell} in GHCi:
 ```haskell
 λ> :m + Control.Arrow
 λ> map (near *** id) digitMap
